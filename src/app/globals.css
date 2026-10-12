@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #f8f4ee;
+  --paper: #fffdf9;
+  --ink: #392f2d;
+  --muted: #847976;
+  --rose: #bf7c79;
+  --rose-dark: #985d5a;
+  --rose-pale: #f2ded9;
+  --sage: #8c9a84;
+  --line: #e9dfd7;
+  --background: var(--cream);
+  --foreground: var(--ink);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid #bd8580; outline-offset: 3px; }
+::selection { background: #ead0c9; color: var(--ink); }
+
+.serif { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+.surface { background: var(--paper); border: 1px solid rgba(113, 83, 72, .12); box-shadow: 0 24px 70px rgba(73, 54, 46, .07); }
+.invitation-theme { background-color: var(--event-background, var(--cream)); }
+.event-accent-button { background-color: var(--event-accent, var(--rose-dark)); }
+.field {
+  width: 100%; border: 1px solid #ded2c9; border-radius: 12px; background: rgba(255,253,249,.88);
+  padding: 14px 15px; color: var(--ink); transition: border-color .2s, box-shadow .2s;
+}
+.field:focus { border-color: var(--rose); outline: none; box-shadow: 0 0 0 3px rgba(191,124,121,.15); }
+.field::placeholder { color: #a89c96; }
+.label { display: block; margin-bottom: 7px; color: #625653; font-size: .83rem; font-weight: 600; }
+
+@keyframes float-soft { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-8px,0); } }
+@keyframes drift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(12px); } }
+@keyframes twinkle { 0%,100% { opacity: .42; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.08); } }
+.float-soft { animation: float-soft 7s ease-in-out infinite; }
+.drift { animation: drift 18s ease-in-out infinite; }
+.twinkle { animation: twinkle 4s ease-in-out infinite; }
+.butterfly-wing-left, .butterfly-wing-right { transform-box: fill-box; animation: butterfly-flap 1.25s ease-in-out infinite; }
+.butterfly-wing-left { transform-origin: right center; }
+.butterfly-wing-right { transform-origin: left center; animation-delay: -.15s; }
+@keyframes butterfly-flap { 0%,100% { transform: scaleX(1); } 50% { transform: scaleX(.62); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
