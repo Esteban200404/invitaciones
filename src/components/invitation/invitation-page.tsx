@@ -12,6 +12,7 @@ import {
   Flower2,
   Gift,
   Heart,
+  Link2,
   LoaderCircle,
   MapPin,
   Share2,
@@ -297,6 +298,28 @@ export function InvitationPage() {
     }
   }
 
+  async function shareLink() {
+    if (!data) return;
+    const url = `${window.location.origin}/`;
+    try {
+      const shareData = {
+        title: data.event.name,
+        text: "Mira la invitación de nuestro Baby Shower.",
+        url,
+      };
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareNotice("Enlace listo para compartir.");
+      } else {
+        await navigator.clipboard.writeText(url);
+        setShareNotice("Enlace copiado. Ya puedes pegarlo en WhatsApp.");
+      }
+    } catch (reason) {
+      if (reason instanceof Error && reason.name === "AbortError") return;
+      setShareNotice("No fue posible compartir el enlace.");
+    }
+  }
+
   if (loading)
     return (
       <main className="grid min-h-screen place-items-center bg-[#f8f4ee] px-5">
@@ -369,13 +392,11 @@ export function InvitationPage() {
           Invitación personal
         </a>
         <button
-          onClick={shareInvitation}
-          disabled={sharingPdf}
-          className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-xs text-[#735f58] hover:bg-white/70 disabled:opacity-60"
-          aria-label={sharingPdf ? "Preparando el PDF" : "Compartir invitación como PDF"}
+          onClick={shareLink}
+          className="inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-xs text-[#735f58] hover:bg-white/70"
+          aria-label="Compartir enlace de la invitación"
         >
-          {sharingPdf ? <LoaderCircle className="animate-spin" size={15} /> : <Share2 size={15} />}{" "}
-          <span className="hidden sm:inline">{sharingPdf ? "Preparando PDF…" : "Compartir PDF"}</span>
+          <Link2 size={15} /> <span className="hidden sm:inline">Compartir enlace</span>
         </button>
       </header>
 
@@ -765,6 +786,13 @@ export function InvitationPage() {
             >
               {sharingPdf ? <LoaderCircle className="animate-spin" size={15} /> : <Share2 size={15} />}
               {sharingPdf ? "Preparando PDF…" : "Compartir PDF"}
+            </button>
+            <button
+              onClick={shareLink}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#dfd2c8] px-5 text-sm font-semibold text-[#715c56] hover:bg-[#f7f1ec]"
+              aria-label="Compartir el enlace de la invitación"
+            >
+              <Link2 size={15} /> Compartir enlace
             </button>
             {/* <button
               onClick={toggleMusic}

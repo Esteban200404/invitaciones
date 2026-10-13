@@ -3,6 +3,10 @@ import { headers } from "next/headers";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+const metadataBase = new URL(siteUrl);
+const socialImage = new URL("/baby-bear-cloud.png", metadataBase).toString();
+
 export async function generateMetadata(): Promise<Metadata> {
   await headers();
   let eventName = "Baby Shower";
@@ -14,12 +18,21 @@ export async function generateMetadata(): Promise<Metadata> {
       description = data.description || `Nos encantaría celebrar contigo la llegada de ${data.baby_name || "nuestro bebé"}.`;
     }
   } catch {
-    return { title: { default: "Un día para celebrar | Baby Shower", template: "%s | Baby Shower" }, description, applicationName: "Baby Shower" };
+    eventName = "Baby Shower";
   }
+  const title = `${eventName} | Invitación`;
   return {
-    title: { default: `${eventName} | Invitación`, template: `%s | ${eventName}` },
+    metadataBase,
+    title: { default: title, template: `%s | ${eventName}` },
     description,
-    openGraph: { title: `${eventName} | Invitación`, description, type: "website", locale: "es_CO" },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      locale: "es_CO",
+      images: [{ url: socialImage, width: 712, height: 712, alt: "Osito bebé dormido sobre una nube" }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [socialImage] },
     applicationName: eventName,
   };
 }
